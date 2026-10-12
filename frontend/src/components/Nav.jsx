@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/Logo";
-import { scrollToId } from "@/lib/api";
+import { scrollToId } from "@/lib/scroll";
 
 const LINKS = [
   ["artista", "O Artista"],

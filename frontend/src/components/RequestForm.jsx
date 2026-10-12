@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { ArrowRight, Loader2, Check } from "lucide-react";
-import axios, { API, errMsg, scrollToId } from "@/lib/api";
+import { ArrowRight, Check, Mail, MessageCircle, ImagePlus } from "lucide-react";
+import { scrollToId } from "@/lib/scroll";
+import { STUDIO, whatsappUrl, mailtoUrl } from "@/config";
 import { Reveal, Eyebrow } from "@/components/Reveal";
-import { Chips, Field, Uploader } from "@/components/FormParts";
+import { Chips, Field } from "@/components/FormParts";
 
 const STYLES = ["Blackwork", "Fine Line", "Neo Tradicional", "Realismo", "Lettering", "Outro"];
 const SIZES = ["Pequeno · até 7cm", "Médio · 8–15cm", "Grande · 16–25cm", "Fechamento"];
@@ -12,11 +13,26 @@ const PLACES = ["Antebraço", "Braço", "Mão", "Ombro", "Costas", "Peito", "Cos
 const BUDGETS = ["Até R$ 500", "R$ 500 – 1.000", "R$ 1.000 – 2.500", "Acima de R$ 2.500", "Prefiro conversar"];
 const EMPTY = { name: "", email: "", whatsapp: "", style: "", placement: "", size: "", budget: "", description: "" };
 
+const buildMessage = (f) =>
+  [
+    `Olá, ${STUDIO.name}! Quero solicitar um desenho.`,
+    "",
+    `Nome: ${f.name}`,
+    `E-mail: ${f.email}`,
+    `WhatsApp: ${f.whatsapp}`,
+    `Estilo: ${f.style}`,
+    `Tamanho: ${f.size}`,
+    `Local: ${f.placement}`,
+    `Orçamento: ${f.budget}`,
+    "",
+    `Ideia: ${f.description.trim()}`,
+    "",
+    "Vou enviar minhas referências (até 3 imagens) aqui na conversa.",
+  ].join("\n");
+
 export const RequestForm = () => {
   const [f, setF] = useState(EMPTY);
-  const [files, setFiles] = useState([]);
-  const [busy, setBusy] = useState(false);
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState(null); // "whatsapp" | "email" | null
   const set = (k) => (v) => setF((s) => ({ ...s, [k]: v?.target ? v.target.value : v }));
 
   useEffect(() => {
@@ -27,27 +43,32 @@ export const RequestForm = () => {
     return () => window.removeEventListener("darken:style", onStyle);
   }, []);
 
-  const submit = async (e) => {
+  const validate = () => {
+    if (!f.name.trim() || !f.email.trim() || !f.whatsapp.trim()) return toast.error("Preencha nome, e-mail e WhatsApp.") && false;
+    if (!f.style || !f.size || !f.placement || !f.budget) return toast.error("Escolha estilo, tamanho, local e orçamento.") && false;
+    if (f.description.trim().length < 10) return toast.error("Conte um pouco mais sobre a sua ideia.") && false;
+    return true;
+  };
+
+  const finish = (via) => {
+    setDone(via);
+    setF(EMPTY);
+    sessionStorage.removeItem("darken_style");
+    setTimeout(() => scrollToId("solicitar"), 60);
+  };
+
+  const submit = (e) => {
     e.preventDefault();
-    if (!f.style || !f.size || !f.placement || !f.budget) return toast.error("Escolha estilo, tamanho, local e orçamento.");
-    if (f.description.trim().length < 10) return toast.error("Conte um pouco mais sobre a sua ideia.");
-    const fd = new FormData();
-    Object.entries(f).forEach(([k, v]) => fd.append(k, v));
-    files.forEach((x) => fd.append("files", x));
-    setBusy(true);
-    try {
-      await axios.post(`${API}/requests`, fd);
-      setDone(true);
-      setF(EMPTY);
-      setFiles([]);
-      sessionStorage.removeItem("darken_style");
-      setTimeout(() => scrollToId("solicitar"), 60);
-      toast.success("Solicitação enviada! Em breve entraremos em contato.");
-    } catch (err) {
-      toast.error(errMsg(err));
-    } finally {
-      setBusy(false);
-    }
+    if (!validate()) return;
+    window.open(whatsappUrl(buildMessage(f)), "_blank", "noopener,noreferrer");
+    toast.success("Abrindo o WhatsApp com seu briefing...");
+    finish("whatsapp");
+  };
+
+  const byEmail = () => {
+    if (!validate()) return;
+    window.location.href = mailtoUrl(`Solicitação de desenho — ${f.name}`, buildMessage(f));
+    finish("email");
   };
 
   return (
@@ -63,7 +84,7 @@ export const RequestForm = () => {
               </h2>
             </Reveal>
             <Reveal delay={0.2}>
-              <p className="mt-8 text-base font-light text-[var(--ash)] leading-relaxed max-w-sm">Preencha o briefing com o máximo de detalhes. O artista analisa cada pedido pessoalmente e responde pelo WhatsApp ou e-mail com orçamento e datas.</p>
+              <p className="mt-8 text-base font-light text-[var(--ash)] leading-relaxed max-w-sm">Preencha o briefing com o máximo de detalhes. Ao enviar, seu pedido abre direto no WhatsApp do estúdio — é só anexar suas referências na conversa.</p>
             </Reveal>
           </div>
         </div>
@@ -71,9 +92,13 @@ export const RequestForm = () => {
           {done ? (
             <motion.div data-testid="request-success" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="border border-[var(--line)] p-10 sm:p-14">
               <div className="w-14 h-14 bg-[var(--blood)] flex items-center justify-center"><Check className="w-7 h-7" /></div>
-              <h3 className="mt-8 font-display italic text-4xl sm:text-5xl">Pedido recebido.</h3>
-              <p className="mt-4 text-[var(--ash)] max-w-md">Seu briefing já está com o artista. Fique de olho no WhatsApp e no e-mail nos próximos dias.</p>
-              <button data-testid="request-new-btn" onClick={() => setDone(false)} className="mt-10 font-mono text-xs tracking-[0.2em] uppercase border-b border-[var(--bone)] pb-1 hover:text-[var(--blood)] hover:border-[var(--blood)] transition-colors">Enviar outra ideia</button>
+              <h3 className="mt-8 font-display italic text-4xl sm:text-5xl">Briefing pronto.</h3>
+              <p className="mt-4 text-[var(--ash)] max-w-md">
+                {done === "whatsapp"
+                  ? "Seu pedido foi aberto no WhatsApp. Confirme o envio por lá e anexe até 3 imagens de referência."
+                  : "Seu e-mail foi aberto no seu aplicativo. Anexe até 3 imagens de referência antes de enviar."}
+              </p>
+              <button data-testid="request-new-btn" onClick={() => setDone(null)} className="mt-10 font-mono text-xs tracking-[0.2em] uppercase border-b border-[var(--bone)] pb-1 hover:text-[var(--blood)] hover:border-[var(--blood)] transition-colors">Enviar outra ideia</button>
             </motion.div>
           ) : (
             <form data-testid="design-request-form" onSubmit={submit} className="flex flex-col gap-12">
@@ -99,11 +124,20 @@ export const RequestForm = () => {
                 </Field>
               </div>
               <Field label="Descreva sua ideia" n="08"><textarea data-testid="request-description-input" required rows={5} className="field resize-none" value={f.description} onChange={set("description")} placeholder="Elementos, significado, se cobre outra tatuagem, cores..." /></Field>
-              <Field label="Referências (até 3 imagens)" n="09"><Uploader files={files} setFiles={setFiles} /></Field>
-              <button data-testid="request-submit-btn" disabled={busy} className="group self-start inline-flex items-center gap-5 bg-[var(--bone)] text-[var(--void)] pl-7 pr-5 py-5 font-mono text-xs tracking-[0.25em] uppercase hover:bg-[var(--blood)] hover:text-[var(--bone)] transition-colors duration-300 disabled:opacity-60">
-                {busy ? "Enviando..." : "Enviar solicitação"}
-                {busy ? <Loader2 className="w-5 h-5 animate-spin" /> : <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
-              </button>
+              <div data-testid="request-references-note" className="flex items-start gap-4 border border-dashed border-[var(--line)] p-5 text-[var(--ash)]">
+                <ImagePlus className="w-5 h-5 text-[var(--blood)] shrink-0 mt-0.5" />
+                <p className="text-sm leading-relaxed"><span className="text-[var(--bone)]">Referências:</span> separe até 3 imagens. Depois de enviar o briefing, anexe-as direto na conversa do WhatsApp (ou no e-mail).</p>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+                <button data-testid="request-submit-btn" type="submit" className="group self-start inline-flex items-center gap-5 bg-[var(--bone)] text-[var(--void)] pl-7 pr-5 py-5 font-mono text-xs tracking-[0.25em] uppercase hover:bg-[var(--blood)] hover:text-[var(--bone)] transition-colors duration-300">
+                  <MessageCircle className="w-5 h-5" />
+                  Enviar pelo WhatsApp
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button data-testid="request-email-btn" type="button" onClick={byEmail} className="self-start inline-flex items-center gap-3 font-mono text-xs tracking-[0.2em] uppercase text-[var(--ash)] border-b border-[var(--line)] pb-1 hover:text-[var(--bone)] hover:border-[var(--bone)] transition-colors">
+                  <Mail className="w-4 h-4" /> ou enviar por e-mail
+                </button>
+              </div>
             </form>
           )}
         </div>

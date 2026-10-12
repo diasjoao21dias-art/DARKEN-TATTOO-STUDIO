@@ -2,30 +2,26 @@
 
 ## Original problem statement
 "Crie um site de portfólio para um tatuador, com galeria e formulário de solicitação de desenho."
-User answers: Darken Tattoo Studio / Monte Carmelo MG; requests saved in DB + simple password admin panel; up to 3 reference images upload; dark, editorial, artistic style.
+User answers: Darken Tattoo Studio / Monte Carmelo MG; dark, editorial, artistic style.
+**2026-10-12 (update):** usuário pediu que o site NÃO use banco de dados — apenas site estático.
 
-## Architecture
-- FastAPI + MongoDB (design_requests, users, login_attempts); Emergent Object Storage for reference images (served only via authed backend route).
-- JWT (Bearer, 12h) single admin seeded from .env (ADMIN_EMAIL/ADMIN_PASSWORD), brute-force lockout.
-- React + Tailwind + framer-motion + lenis. Routes: `/` (site), `/admin` (panel).
-
-## User personas
-- Client wanting a custom tattoo (browses gallery, sends briefing).
-- Tattoo artist (reviews requests, updates status).
+## Architecture (static)
+- React + Tailwind + framer-motion + lenis. Página única (`/`). Sem rotas, sem axios, sem backend.
+- Formulário de solicitação monta o briefing e abre o WhatsApp do estúdio (`wa.me`) com a mensagem preenchida; fallback "enviar por e-mail" (`mailto:`). Referências (até 3 imagens) o cliente anexa na conversa.
+- Dados do estúdio centralizados em `frontend/src/config.js` (`STUDIO.whatsapp`, `email`, `instagram`, `address`).
+- `backend/server.py` é apenas um stub `/api/health` para o ambiente de preview — pode ser ignorado no deploy estático (`yarn build` → pasta `build/`).
 
 ## Core requirements
-- Portfolio gallery with style filters + lightbox ("Quero algo nesse estilo" prefills form)
-- Design request form (name, email, WhatsApp, style, size, placement, budget, description, ≤3 images ≤8MB)
-- Admin panel: login, list/filter requests, view reference images, change status
+- Galeria com filtros por estilo + lightbox ("Quero algo nesse estilo" pré-seleciona o estilo no formulário)
+- Formulário (nome, e-mail, WhatsApp, estilo, tamanho, local, orçamento, descrição) → WhatsApp / e-mail
 
-## Implemented (2026-10-12)
-- Kinetic hero (masked line reveal, ash particle canvas, 3D tilt spotlight frame, scroll parallax), slow marquee, About, filterable gallery + lightbox, 4-step bento "O Ritual", request form, footer, SVG logo/favicon
-- Backend endpoints all verified via curl + UI (desktop 1440 & mobile 390)
+## Implemented
+- 2026-10-12: Hero cinético, marquee, About, galeria + lightbox, bento "O Ritual", formulário, footer, logo/favicon SVG.
+- 2026-10-12: Conversão para site estático — removidos painel admin, JWT, MongoDB, upload de arquivos, axios e react-router. Verificado via Playwright: submit abre `api.whatsapp.com/send?phone=...&text=<briefing>`.
 
 ## Placeholders to replace
-- [Nome do artista], [Endereço do estúdio], [@instagram], [WhatsApp]; gallery uses stock photos (Unsplash) as placeholders for real work
+- `config.js`: `whatsapp` (5534999999999), `email`, `instagram`, `address`; About: [Nome do artista]; galeria usa fotos stock (Unsplash).
 
 ## Backlog
-- P1: Replace stock gallery with real works (admin-managed gallery upload)
-- P1: Email/WhatsApp notification on new request
-- P2: Testimonials, FAQ/aftercare page, booking calendar
+- P1: Substituir fotos stock da galeria por trabalhos reais (arquivos em `public/img`)
+- P2: SEO/meta tags, depoimentos, FAQ/cuidados pós-tatuagem

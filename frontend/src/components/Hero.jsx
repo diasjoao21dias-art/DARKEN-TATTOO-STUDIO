@@ -3,7 +3,7 @@ import { motion, useMotionValue, useSpring, useTransform, useScroll } from "fram
 import { ArrowDownRight } from "lucide-react";
 import { AshCanvas } from "@/components/AshCanvas";
 import { EASE } from "@/components/Reveal";
-import { scrollToId } from "@/lib/api";
+import { scrollToId } from "@/lib/scroll";
 
 const LINES = [
   { t: "Marcas", c: "font-cond font-black uppercase tracking-tight" },

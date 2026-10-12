@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { WORKS } from "@/components/Gallery";
-import { scrollToId } from "@/lib/api";
+import { scrollToId } from "@/lib/scroll";
 
 export const Lightbox = ({ index, setIndex }) => {
   const open = index !== null;
