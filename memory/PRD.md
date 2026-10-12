@@ -22,6 +22,11 @@ User answers: Darken Tattoo Studio / Monte Carmelo MG; dark, editorial, artistic
 ## Placeholders to replace
 - `config.js`: `whatsapp` (5534999999999), `email`, `instagram`, `address`; About: [Nome do artista]; galeria usa fotos stock (Unsplash).
 
+## Deploy
+- Alvo: Render (Static Site). Config em `/app/render.yaml` + `/app/frontend/public/_redirects`.
+- Root: `frontend` | Build: `yarn install && CI=false yarn build` | Publish: `build`.
+- Guia: `/app/DEPLOY_RENDER.md` (pt-BR). Build validado OK (2026-07).
+
 ## Backlog
 - P1: Substituir fotos stock da galeria por trabalhos reais (arquivos em `public/img`)
 - P2: SEO/meta tags, depoimentos, FAQ/cuidados pós-tatuagem
