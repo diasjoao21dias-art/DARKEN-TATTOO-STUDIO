@@ -1,0 +1,109 @@
+{
+  "project_info": {
+    "name": "Darken Tattoo Studio",
+    "location": "Monte Carmelo, MG - Brasil",
+    "aesthetic": "Escuro, Editorial, Brutalista Artístico & Sombrio Premium",
+    "language": "pt-BR",
+    "frameworks": ["FastAPI", "React (JS)", "Tailwind CSS", "Framer Motion", "Lenis Scroll", "Lucide React", "Sonner"]
+  },
+  "typography": {
+    "font_pairings": {
+      "display_heading": "Cinzel / Cormorant Garamond / Playfair Display (Serif dramático editorial)",
+      "subheading_accents": "Bebas Neue / Syne / Monument Extended (Sans brutalista condensada)",
+      "body": "Plus Jakarta Sans / Inter (Clean tracking com pesos 300-400)",
+      "mono_details": "JetBrains Mono (Para coordenadas, especificações técnicas de agendamento e etiquetas de status)"
+    },
+    "scale_hierarchy": {
+      "hero_h1": "text-4xl sm:text-6xl lg:text-7xl font-serif tracking-tight uppercase leading-[0.9]",
+      "section_h2": "text-3xl sm:text-5xl font-serif tracking-tight leading-none uppercase",
+      "card_title": "text-xl sm:text-2xl font-sans tracking-wide font-light uppercase",
+      "eyebrow_label": "text-xs uppercase tracking-[0.3em] font-mono text-zinc-500",
+      "body_text": "text-base sm:text-lg font-light leading-relaxed text-zinc-400"
+    }
+  },
+  "color_system": {
+    "archetype": "ARCHETYPE 5: LUXURY & DARK EDITORIAL (Obsidian Void & Smoke Gold)",
+    "palette": {
+      "bg_void": "#070709",
+      "bg_surface_dark": "#0F0F14",
+      "bg_surface_elevated": "#171720",
+      "accent_gold": "#D4AF37",
+      "accent_amber": "#C59B27",
+      "accent_crimson_muted": "#8B1E26",
+      "text_primary": "#F4F4F6",
+      "text_muted": "#A1A1AA",
+      "border_dark": "rgba(255, 255, 255, 0.08)",
+      "border_highlight": "rgba(212, 175, 55, 0.3)"
+    },
+    "contrast_rules": [
+      "Fundo principal sempre em Obsidian Black (#070709) com overlay de ruído tátil (film grain).",
+      "Textos com contraste mínimo de 5:1 usando #F4F4F6 em sobriedade sobre o fundo escuro.",
+      "Botões principais usam tom metálico envelhecido (#D4AF37 / #C59B27) ou alto contraste preto/branco brutalista."
+    ]
+  },
+  "key_system_requirements": {
+    "hero": "Hero cinemático de grande escala com revelação de texto cinética linha por linha no carregamento (masked clip-path reveal + framer-motion stagger).",
+    "photography_treatment": "Tratamento de fotografia editorial dramático: iluminação tipo spotlight focal, molduras assimétricas cortadas (clipped frames/sharp edges) e efeito desaturado com alto contraste.",
+    "bento_grid": "Grid Bento perfeitamente alinhado com bordas finas de 1px (grid borders) para destacar os estilos do estúdio e diferenciais.",
+    "logo_favicon": "Marca gráfica SVG original (adaga/agulha estilizada sob monograma 'D') para cabeçalho e favicon.",
+    "marquee": "Uma faixa marquee editorial lenta ('Editorial Ribbon') no meio da página exibindo valores, frase de efeito e localidades de guest spots.",
+    "motion_scroll": "Lenis Smooth Scroll ativado globalmente + revelações de rolagem Framer Motion e micro-interações táteis nos cards e botões.",
+    "3d_parallax": "Um momento hero/fundo sutil com partículas 3D interativas em Canvas (efeito de cinzas fluindo/poeira de tinta dramática em movimento de mouse)."
+  },
+  "sections_breakdown": [
+    {
+      "id": "hero",
+      "name": "Kinetic Hero & Spotlight",
+      "description": "Apresentação impacto editorial do Darken Tattoo Studio em Monte Carmelo, MG. Inclui revelação de linhas, estatísticas e CTA rápido de orçamento."
+    },
+    {
+      "id": "about",
+      "name": "O Artista & A Filosofia",
+      "description": "Seção editorial estilo revista com retrato de alto contraste do tatuador, manifesto do estúdio e bios de especialidades."
+    },
+    {
+      "id": "gallery",
+      "name": "Galeria de Trabalhos (Filtrável + Lightbox)",
+      "description": "Filtros por estilo (Blackwork, Fine Line, Neo Tradicional, Dark Surrealism, Microrealismo). Modal de Lightbox com zoom, detalhes da sessão e botão para solicitar desenho similar."
+    },
+    {
+      "id": "process",
+      "name": "O Ritual / Como Funciona",
+      "description": "Bento Grid estruturado explicando as etapas: 1. Ideia & Referências, 2. Design Exclusivo, 3. Sessão no Estúdio, 4. Cuidados & Cicatrização."
+    },
+    {
+      "id": "request_form",
+      "name": "Formulário de Solicitação de Desenho",
+      "description": "Formulário completo de briefing: Nome, E-mail, WhatsApp, Estilo desejado, Local do corpo, Tamanho em cm, Descrição da ideia, Faixa de orçamento e Upload de até 3 imagens de referência. Salva diretamente no banco de dados SQLite/FastAPI."
+    },
+    {
+      "id": "admin_panel",
+      "name": "Painel de Administração Protegido",
+      "description": "Acesso via senha simples (ex: 'darken2026') com tabela de solicitações recebidas, filtro por status (Pendente, Em Análise, Aprovado, Concluído), visualização de imagens anexadas e alteração de status."
+    }
+  ],
+  "image_urls": {
+    "hero_background": "https://images.unsplash.com/photo-1568515045052-f9a854d70bfd?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "artist_portrait": "https://images.unsplash.com/photo-1552627019-947c3789ffb5?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "tattoo_machine_detail": "https://images.unsplash.com/photo-1542744383-8c330d91f4b1?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "gallery_blackwork_1": "https://images.unsplash.com/photo-1561377455-190afb395ed7?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "gallery_fineline_1": "https://images.unsplash.com/photo-1652156191482-b90635a7d336?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "gallery_surrealism_1": "https://images.unsplash.com/photo-1585303390830-874c989ce8f1?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "gallery_studio_ambience": "https://images.unsplash.com/photo-1641636361086-4fbd4488df50?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "gallery_editorial_portrait": "https://images.unsplash.com/photo-1620407539316-95327fceab4b?crop=entropy&cs=srgb&fm=jpg&q=85"
+  },
+  "instructions_to_main_agent": [
+    "1. Configurar o arquivo index.html no frontend para usar as fontes do Google Fonts (Cinzel / Cormorant Garamond, Plus Jakarta Sans, Bebas Neue) e incluir a marca SVG do Darken Tattoo Studio no favicon.",
+    "2. Implementar suave rolagem contínua com @studio-freight/lenis ou lenis no App.js para aquele toque de site premiado do Awwwards.",
+    "3. Adicionar componente de partículas no canvas do Hero (cinzas de fuligem flutuantes responsivas a posição do mouse).",
+    "4. Criar backend FastAPI funcional com endpoint `/api/requests` (POST para salvar briefings com upload de imagens base64/arquivos, GET para listar solicitações) e autenticação simples para o modal/painel `/admin`.",
+    "5. Garantir que todas as interações e elementos fundamentais contenham o atributo `data-testid` (ex: `data-testid=\"nav-booking-btn\"`, `data-testid=\"gallery-filter-blackwork\"`, `data-testid=\"design-request-form\"`, `data-testid=\"admin-login-input\"`).",
+    "6. Todos os textos devem estar em Português do Brasil (pt-BR) respeitando o tom soturno, elegante e artístico."
+  ],
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": {
+    "spacing": "Utilizar padding e gaps amplos (p-8, p-12, gap-8) para dar respiração editorial.",
+    "no_gradients": "NUNCA utilizar gradientes coloridos saturados ou azul neon. Usar pretos profundos, texturas sutis de ruído, vidros fumê com backdrop-blur e bordas metálicas finas.",
+    "data_testid": "MANDATÓRIO: Adicionar data-testid em botões, campos de formulário, cards e filtros para testes de automação.",
+    "toast_notifications": "Utilizar Sonner para toasts de validação de formulário e login administrativo."
+  }
+}

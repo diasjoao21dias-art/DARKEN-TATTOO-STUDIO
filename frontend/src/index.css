@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --void: #08080a;
+        --ink: #0f0f12;
+        --ink-2: #16161b;
+        --bone: #ede8df;
+        --ash: #a8a39b;
+        --blood: #c1272d;
+        --line: rgba(237, 232, 223, 0.12);
+
+        --background: 240 11% 3%;
+        --foreground: 38 25% 90%;
+        --card: 240 9% 7%;
+        --card-foreground: 38 25% 90%;
+        --popover: 240 9% 7%;
+        --popover-foreground: 38 25% 90%;
+        --primary: 38 25% 90%;
+        --primary-foreground: 240 11% 3%;
+        --secondary: 240 9% 10%;
+        --secondary-foreground: 38 25% 90%;
+        --muted: 240 9% 10%;
+        --muted-foreground: 37 6% 64%;
+        --accent: 240 9% 12%;
+        --accent-foreground: 38 25% 90%;
+        --destructive: 357 66% 45%;
+        --destructive-foreground: 38 25% 90%;
+        --border: 38 15% 18%;
+        --input: 38 15% 18%;
+        --ring: 357 66% 45%;
+        --radius: 0rem;
+    }
+    * { @apply border-border; }
+    html { background: var(--void); }
+    body {
+        margin: 0;
+        background: var(--void);
+        color: var(--bone);
+        font-family: "Manrope", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+    ::selection { background: var(--blood); color: var(--bone); }
+}
+
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+.font-display { font-family: "Cormorant Garamond", serif; }
+.font-cond { font-family: "Big Shoulders Display", sans-serif; }
+.font-mono { font-family: "JetBrains Mono", monospace; }
+
+.grain::after {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    pointer-events: none;
+    z-index: 60;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 6s steps(8) infinite;
+}
+@keyframes grain {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-3%, 2%); }
+    50% { transform: translate(2%, -3%); }
+    75% { transform: translate(-1%, 3%); }
+}
+
+.marquee-track { animation: marquee 70s linear infinite; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+.outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--bone);
+}
+
+.photo-treat { filter: grayscale(1) contrast(1.15) brightness(0.85); transition: filter 0.8s ease, transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.group:hover .photo-treat { filter: grayscale(0.15) contrast(1.1) brightness(0.95); transform: scale(1.04); }
+
+.clip-blade { clip-path: polygon(0 0, 100% 0, 100% 88%, 86% 100%, 0 100%); }
+.clip-notch { clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%, 0 6%); }
+
+.field {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 0.9rem 0;
+    color: var(--bone);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+    border-radius: 0;
+}
+.field:focus { border-color: var(--blood); }
+.field::placeholder { color: #8a857e; }
+select.field option { background: var(--ink); color: var(--bone); }
+
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track, .grain::after { animation: none; }
+}
